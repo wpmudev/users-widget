@@ -8,6 +8,7 @@ Version: 1.0.1
 Author URI: http://premium.wpmudev.org
 WDP ID: 63
 Network: true
+Text Domain: widget_users
 */
 
 /* 
@@ -74,8 +75,7 @@ function widget_users_widget_init() {
 				<div style="text-align:left">
                 
 				<label for="users-title" style="line-height:35px;display:block;"><?php _e('Title', 'widgets', 'widget_users'); ?>:<br />
-                <input class="widefat" id="users-title" name="users-title" value="<?php echo $options['users-title']; ?>" type="text" style="width:95%;">
-                </select>
+                <input class="widefat" id="users-title" name="users-title" value="<?php echo $options['users-title']; ?>" type="text" style="width:95%;" />
                 </label>
 				<label for="users-display" style="line-height:35px;display:block;"><?php _e('Display', 'widgets', 'widget_users'); ?>:
                 <select name="users-display" id="users-display" style="width:95%;">
