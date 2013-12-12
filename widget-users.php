@@ -4,14 +4,14 @@ Plugin Name: Users Widget
 Plugin URI: http://premium.wpmudev.org/project/users-widget
 Description: Show a nice list of random users from your site, with avatars, wherever you want with this handy widget
 Author: S H Mohanjith (Incsub), Andrew Billits (Incsub)
-Version: 1.0.1
+Version: 1.0.2
 Author URI: http://premium.wpmudev.org
 WDP ID: 63
 Network: true
 Text Domain: widget_users
 */
 
-/* 
+/*
 Copyright 2007-2009 Incsub (http://incsub.com)
 
 This program is free software; you can redistribute it and/or modify
@@ -33,7 +33,7 @@ add_action('init', 'widget_users_init');
 function widget_users_init() {
 	if ( !is_multisite() )
 		exit( 'The Widget Blogs plugin is only compatible with WordPress Multisite.' );
-		
+
 	load_plugin_textdomain('widget_users', false, dirname(plugin_basename(__FILE__)).'/languages');
 }
 
@@ -50,7 +50,7 @@ $users_widget_main_blog_only = 'yes'; //Either 'yes' or 'no'
 //------------------------------------------------------------------------//
 function widget_users_widget_init() {
 	global $wpdb, $users_widget_main_blog_only;
-		
+
 	// Check for the required API functions
 	if ( !function_exists('register_sidebar_widget') || !function_exists('register_widget_control') )
 		return;
@@ -73,7 +73,7 @@ function widget_users_widget_init() {
 		}
 	?>
 				<div style="text-align:left">
-                
+
 				<label for="users-title" style="line-height:35px;display:block;"><?php _e('Title', 'widgets', 'widget_users'); ?>:<br />
                 <input class="widefat" id="users-title" name="users-title" value="<?php echo $options['users-title']; ?>" type="text" style="width:95%;" />
                 </label>
@@ -203,13 +203,3 @@ function widget_users_widget_init() {
 }
 
 add_action('widgets_init', 'widget_users_widget_init');
-
-if ( !function_exists( 'wdp_un_check' ) ) {
-	add_action( 'admin_notices', 'wdp_un_check', 5 );
-	add_action( 'network_admin_notices', 'wdp_un_check', 5 );
-
-	function wdp_un_check() {
-		if ( !class_exists( 'WPMUDEV_Update_Notifications' ) && current_user_can( 'edit_users' ) )
-			echo '<div class="error fade"><p>' . __('Please install the latest version of <a href="http://premium.wpmudev.org/project/update-notifications/" title="Download Now &raquo;">our free Update Notifications plugin</a> which helps you stay up-to-date with the most stable, secure versions of WPMU DEV themes and plugins. <a href="http://premium.wpmudev.org/wpmu-dev/update-notifications-plugin-information/">More information &raquo;</a>', 'wpmudev') . '</a></p></div>';
-	}
-}
