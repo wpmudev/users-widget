@@ -4,7 +4,7 @@ Plugin Name: Users Widget
 Plugin URI: http://premium.wpmudev.org/project/users-widget
 Description: Show a nice list of random users from your site, with avatars, wherever you want with this handy widget
 Author: S H Mohanjith (Incsub), Andrew Billits (Incsub)
-Version: 1.0.2
+Version: 1.0.1.1
 Author URI: http://premium.wpmudev.org
 WDP ID: 63
 Network: true
