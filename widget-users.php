@@ -4,7 +4,7 @@ Plugin Name: Users Widget
 Plugin URI: http://premium.wpmudev.org/project/users-widget
 Description: Show a nice list of random users from your site, with avatars, wherever you want with this handy widget
 Author: S H Mohanjith (Incsub), Andrew Billits (Incsub)
-Version: 1.0.1.1
+Version: 1.0.1.2
 Author URI: http://premium.wpmudev.org
 WDP ID: 63
 Network: true
@@ -52,14 +52,14 @@ function widget_users_widget_init() {
 	global $wpdb, $users_widget_main_blog_only;
 
 	// Check for the required API functions
-	if ( !function_exists('register_sidebar_widget') || !function_exists('register_widget_control') )
+	if ( !function_exists('wp_register_sidebar_widget') || !function_exists('wp_register_widget_control') )
 		return;
 
 	// This saves options and prints the widget's config form.
 	function widget_users_control() {
 		global $wpdb;
 		$options = $newoptions = get_option('widget_users');
-		if ( $_POST['users-submit'] ) {
+		if ( isset($_POST['users-submit']) && $_POST['users-submit'] ) {
 			$newoptions['users-title'] = $_POST['users-title'];
 			$newoptions['users-display'] = $_POST['users-display'];
 			$newoptions['users-display-name-characters'] = $_POST['users-display-name-characters'];
@@ -133,7 +133,8 @@ function widget_users_widget_init() {
 				</div>
 	<?php
 	}
-// This prints the widget
+
+	// This prints the widget
 	function widget_users($args) {
 		global $wpdb, $current_site;
 		extract($args);
@@ -150,10 +151,10 @@ function widget_users_widget_init() {
             <br />
             <?php
 
-			$newoptions['users-display'] = $_POST['users-display'];
+			/* $newoptions['users-display'] = $_POST['users-display'];
 			$newoptions['users-order'] = $_POST['users-order'];
 			$newoptions['users-number'] = $_POST['users-number'];
-			$newoptions['users-avatar-size'] = $_POST['users-avatar-size'];
+			$newoptions['users-avatar-size'] = $_POST['users-avatar-size']; */
 				//=================================================//
 				if ( $options['users-order'] == 'most_recent' ) {
 					$query = "SELECT ID, display_name FROM " . $wpdb->base_prefix . "users WHERE spam != '1' ORDER BY user_registered DESC LIMIT " . $options['users-number'];
@@ -161,23 +162,24 @@ function widget_users_widget_init() {
 					$query = "SELECT ID, display_name FROM " . $wpdb->base_prefix . "users WHERE spam != '1' ORDER BY RAND() LIMIT " . $options['users-number'];
 				}
 				$users = $wpdb->get_results( $query, ARRAY_A );
-				if (count(users) > 0){
+				if (count($users) > 0){
 					if ( $options['users-display'] == 'display_name' || $options['users-display'] == 'avatar_display_name' ) {
 						echo '<ul>';
 					}
 					foreach ($users as $user){
 						$primary_blog = get_active_blog_for_user( $user['ID'] );
+						$siteurl = ($primary_blog)?$primary_blog->siteurl:get_site_url();
 						if ( $options['users-display'] == 'avatar_display_name' ) {
 							echo '<li>';
-							echo '<a href="' . $primary_blog->siteurl . '">' . get_avatar( $user['ID'], $options['users-avatar-size'], '' ) . '</a>';
+							echo '<a href="' . $siteurl . '">' . get_avatar( $user['ID'], $options['users-avatar-size'], '' ) . '</a>';
 							echo ' ';
-							echo '<a href="' . $primary_blog->siteurl . '">' . substr($user['display_name'], 0, $options['users-display-name-characters']) . '</a>';
+							echo '<a href="' . $siteurl . '">' . substr($user['display_name'], 0, $options['users-display-name-characters']) . '</a>';
 							echo '</li>';
 						} else if ( $options['users-display'] == 'avatar' ) {
-							echo '<a href="' . $primary_blog->siteurl . '">' . get_avatar( $user['ID'], $options['users-avatar-size'], '' ) . '</a>';
+							echo '<a href="' . $siteurl . '">' . get_avatar( $user['ID'], $options['users-avatar-size'], '' ) . '</a>';
 						} else if ( $options['users-display'] == 'display_name' ) {
 							echo '<li>';
-							echo '<a href="' . $primary_blog->siteurl . '">' . substr($user['display_name'], 0, $options['users-display-name-characters']) . '</a>';
+							echo '<a href="' . $siteurl . '">' . substr($user['display_name'], 0, $options['users-display-name-characters']) . '</a>';
 							echo '</li>';
 						}
 					}
@@ -193,12 +195,12 @@ function widget_users_widget_init() {
 	// Tell Dynamic Sidebar about our new widget and its control
 	if ( $users_widget_main_blog_only == 'yes' ) {
 		if ( $wpdb->blogid == 1 ) {
-			register_sidebar_widget(array(__('Users', 'widget_users'), 'widgets'), 'widget_users');
-			register_widget_control(array(__('Users', 'widget_users'), 'widgets'), 'widget_users_control');
+			wp_register_sidebar_widget('users', __('Users', 'widget_users'), 'widget_users');
+			wp_register_widget_control('users', __('Users', 'widget_users'), 'widget_users_control');
 		}
 	} else {
-		register_sidebar_widget(array(__('Users', 'widget_users'), 'widgets'), 'widget_users');
-		register_widget_control(array(__('Users', 'widget_users'), 'widgets'), 'widget_users_control');
+		wp_register_sidebar_widget('users', __('Users', 'widget_users'), 'widget_users');
+		wp_register_widget_control('users', __('Users', 'widget_users'), 'widget_users_control');
 	}
 }
 
