@@ -4,7 +4,7 @@ Plugin Name: Users Widget
 Plugin URI: http://premium.wpmudev.org/project/users-widget
 Description: Show a nice list of random users from your site, with avatars, wherever you want with this handy widget
 Author: S H Mohanjith (Incsub), Andrew Billits (Incsub)
-Version: 1.0.1.2
+Version: 1.0.1.3
 Author URI: http://premium.wpmudev.org
 WDP ID: 63
 Network: true
@@ -58,7 +58,14 @@ function widget_users_widget_init() {
 	// This saves options and prints the widget's config form.
 	function widget_users_control() {
 		global $wpdb;
-		$options = $newoptions = get_option('widget_users');
+		$options = $newoptions = get_option('widget_users', array(
+			'users-title' => __('Users', 'widgets', 'widget_users'),
+			'users-display' => 'avatar_display_name',
+			'users-display-name-characters' => 30,
+			'users-order' => 'most_recent',
+			'users-number' => 10,
+			'users-avatar-size' => 16,
+		));
 		if ( isset($_POST['users-submit']) && $_POST['users-submit'] ) {
 			$newoptions['users-title'] = $_POST['users-title'];
 			$newoptions['users-display'] = $_POST['users-display'];
@@ -139,7 +146,14 @@ function widget_users_widget_init() {
 		global $wpdb, $current_site;
 		extract($args);
 		$defaults = array('count' => 10, 'username' => 'wordpress');
-		$options = (array) get_option('widget_users');
+		$options = (array) get_option('widget_users', array(
+                        'users-title' => __('Users', 'widgets', 'widget_users'),
+                        'users-display' => 'avatar_display_name',
+                        'users-display-name-characters' => 30,
+                        'users-order' => 'most_recent',
+                        'users-number' => 10,
+                        'users-avatar-size' => 16,
+                ));
 
 		foreach ( $defaults as $key => $value )
 			if ( !isset($options[$key]) )
