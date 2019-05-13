@@ -2,6 +2,10 @@
 
 **INACTIVE NOTICE: This plugin is unsupported by WPMUDEV, we've published it here for those technical types who might want to fork and maintain it for their needs.**
 
+## Translations
+
+Translation files can be found at https://github.com/wpmudev/translations
+
 ## Users Widget displays a simple list, or a mosaic list, of random users complete with avatars in any widget area.
 
 ### Simple and Effective
